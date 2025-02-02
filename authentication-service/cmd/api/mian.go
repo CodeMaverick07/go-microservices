@@ -8,6 +8,10 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	_ "github.com/jackc/pgconn"
+	_ "github.com/jackc/pgx/v4"
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
  
 const webPort = 80
@@ -43,7 +47,7 @@ func main() {
 }
 
 func openDB(dsn string) (*sql.DB,error) {
-  db,err:=sql.Open("postgres", dsn)
+  db,err:=sql.Open("pgx", dsn)
 
   if err !=nil {
 	return nil, err
@@ -57,6 +61,7 @@ func openDB(dsn string) (*sql.DB,error) {
 
 func connectDB() *sql.DB {
 	dsn := os.Getenv("DSN")
+	fmt.Print(dsn)
 
 	for {
 		connect ,err := openDB(dsn)
