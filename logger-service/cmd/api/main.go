@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"log-service/data"
+	"net/http"
 
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -17,7 +20,9 @@ const (
 
 var client *mongo.Client
 
-type Config struct{}
+type Config struct{
+	Models data.Models
+}
 
 func main() {
   mongoClient, err := connectToMongo()
@@ -25,6 +30,7 @@ func main() {
   if err != nil {
 	panic(err)
   }
+  log.Println("connected to mongo")
   client = mongoClient
 
   ctx , cancel := context.WithCancel(context.Background())
@@ -36,7 +42,22 @@ func main() {
 	}
   }()
 
+  app := Config{
+	Models: data.New(client),
+
+  }
+  log.Println("starting port on ",WebPort)
+  srv := &http.Server{
+	  Addr: fmt.Sprintf(":%d", WebPort),
+	Handler: app.routes(),
 }
+
+err = srv.ListenAndServe()
+if err != nil {
+	panic(err)
+}
+}
+
 
 func connectToMongo() (*mongo.Client, error) {
 	clientOptions := options.Client().ApplyURI(mongoURL)
