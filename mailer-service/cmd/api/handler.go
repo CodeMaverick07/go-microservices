@@ -1,6 +1,8 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func (app *Config) SendMail(w http.ResponseWriter,r *http.Request) {
 	type mailMessage struct {
@@ -14,6 +16,7 @@ func (app *Config) SendMail(w http.ResponseWriter,r *http.Request) {
 
 	err := app.readJSON(w,r,&requestPayload)
 	if err != nil {
+		
 		app.writeJSON(w,http.StatusBadRequest,jsonResponse{Error:true,Message:"Invalid request payload"})
 		return
 	}
@@ -26,6 +29,7 @@ func (app *Config) SendMail(w http.ResponseWriter,r *http.Request) {
 
 	err = app.Mailer.sendSMTPMessage(msg)
 	if err != nil {
+		
 		app.writeJSON(w,http.StatusBadRequest,jsonResponse{Error:true,Message:"Invalid request payload"})
 		return
 	}

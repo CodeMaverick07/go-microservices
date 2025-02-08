@@ -22,13 +22,13 @@ func main() {
 	log.Printf("Starting mail service on port %d", webPort)
 
 	srv := &http.Server{
-		Addr: fmt.Sprint(":%d", webPort),
-		Handler: app.routes(),
-		
+		Addr: fmt.Sprintf(":%d", webPort),
+		Handler: app.routes(),	
 	}
-
 	err := srv.ListenAndServe()
+
 	if err != nil {
+		
 		log.Fatalf("server failed to start: %v", err)
 		log.Panic(err)
 	}

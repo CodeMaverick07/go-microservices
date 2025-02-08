@@ -4,4 +4,6 @@ RUN mkdir /app
 
 COPY mailerServiceApp /app
 
+COPY templates /templates
+
 CMD [ "/app/mailerServiceApp" ]

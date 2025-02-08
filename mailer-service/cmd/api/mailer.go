@@ -43,10 +43,12 @@ func (m *Mail) sendSMTPMessage(msg Message) (error) {
 	msg.DataMap = data
     formmatedMessage,err := m.buildHTMLMessage(msg)
 	if err != nil {
+		
 		return err 
 	}
 	plainMessage,err := m.buildPlainTextMessage(msg)
 	if err != nil {
+		
 		return err 
 	}
 
@@ -62,6 +64,7 @@ func (m *Mail) sendSMTPMessage(msg Message) (error) {
 	 
 	smtpClient,err := server.Connect()
 	if err != nil {
+		
 		return err 
 	}
 
@@ -79,6 +82,7 @@ func (m *Mail) sendSMTPMessage(msg Message) (error) {
 	}
 	err = email.Send(smtpClient)
 	if err != nil {
+		
 		return err
 	}
 	return nil
@@ -87,16 +91,19 @@ func (m *Mail) buildHTMLMessage(msg Message) (string,error) {
      templateToRender := "./templates/mail.html.gohtml"
 	 t,err := template.New("email-html").ParseFiles(templateToRender)
 	 if err != nil {
+		
 		 return "",err
 	 }
 	 var tpl bytes.Buffer
 	 if err = t.ExecuteTemplate(&tpl,"body",msg.DataMap); err != nil {
+		
 		 return "",err
 	 }
 	 formattedMessage := tpl.String()
 	 formattedMessage,err = m.inlineCSS(formattedMessage)
 
      if err != nil {
+		
 		 return "",err
 	 }
 	 return formattedMessage,nil
@@ -105,18 +112,15 @@ func (m *Mail) buildPlainTextMessage(msg Message) (string,error) {
      templateToRender := "./templates/mail.plain.gohtml"
 	 t,err := template.New("email-plain").ParseFiles(templateToRender)
 	 if err != nil {
+		
 		 return "",err
 	 }
 	 var tpl bytes.Buffer
 	 if err = t.ExecuteTemplate(&tpl,"body",msg.DataMap); err != nil {
+		
 		 return "",err
 	 }
 	 plainMessage:= tpl.String()
-	
-
-     if err != nil {
-		 return "",err
-	 }
 	 return plainMessage,nil
 }
 func (m *Mail) inlineCSS(body string) (string,error) {
@@ -127,10 +131,12 @@ func (m *Mail) inlineCSS(body string) (string,error) {
 	}
 	prem,err := premailer.NewPremailerFromString(body,&options)
 	if err != nil {
+		
 		return "",err
 	}
 	html,err := prem.Transform()
 	if err != nil {
+		
 		return "",err
 	}
 	return html,nil
