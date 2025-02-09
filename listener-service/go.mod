@@ -1,4 +1,4 @@
-module listner-service
+module listener-service
 
 go 1.23.5
 
