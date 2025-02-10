@@ -97,25 +97,35 @@ func handlePayload(payload Payload) {
 }
 
 func logEvent(payload Payload) error {
-	jsonData, _ := json.MarshalIndent(payload.Data,"","  ")
-    logServiceURL:= "http://logger-service/log"
-	request ,err := http.NewRequest("POST",logServiceURL,bytes.NewBuffer(jsonData))
-	if err != nil {
-		
-		return err
-	}
-	request.Header.Set("Content-Type","application/json")
-	client := &http.Client{}
-	response ,err := client.Do(request)
-	if err != nil {
-		return err 
-	}
-	defer response.Body.Close()
+    // Create a map or struct that matches the logger service's expected format
+    logData := map[string]string{
+        "name": payload.Name,
+        "data": payload.Data,
+    }
 
-	if response.StatusCode != http.StatusAccepted {
-		return err
-	}
+    jsonData, err := json.Marshal(logData)
+    if err != nil {
+        return err
+    }
 
-	return nil
+    logServiceURL := "http://logger-service/log"
+    request, err := http.NewRequest("POST", logServiceURL, bytes.NewBuffer(jsonData))
+    if err != nil {
+        return err
+    }
+    request.Header.Set("Content-Type", "application/json")
+    
+    client := &http.Client{}
+    response, err := client.Do(request)
+    if err != nil {
+        return err 
+    }
+    defer response.Body.Close()
+
+    if response.StatusCode != http.StatusAccepted {
+        return fmt.Errorf("logger service returned status code %d", response.StatusCode)
+    }
+
+    return nil
 }
 
