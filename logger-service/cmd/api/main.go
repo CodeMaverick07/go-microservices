@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"log-service/data"
+	"net"
 	"net/http"
+	"net/rpc"
 
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -46,6 +48,11 @@ func main() {
 	Models: data.New(client),
 
   }
+  err = rpc.Register(new(RPCServer))
+  if err != nil {
+	panic(err)
+	  }
+  go app.rpcListen()
   log.Println("starting port on ",WebPort)
   srv := &http.Server{
 	  Addr: fmt.Sprintf(":%d", WebPort),
@@ -58,6 +65,24 @@ if err != nil {
 }
 }
 
+func (app *Config) rpcListen() error {
+	log.Println("starting rpc server on ",rpcPort)
+	listen,err := net.Listen("tcp",fmt.Sprintf("0.0.0.0:%d",rpcPort))
+    if err != nil {
+		return err
+	}
+	defer listen.Close()
+	for {
+		rpcConn,err := listen.Accept()
+		if err != nil {
+			log.Println("error accepting connection",err)
+			continue
+		}
+		go rpc.ServeConn(rpcConn)
+	}
+	return nil	
+}
+ 
 
 func connectToMongo() (*mongo.Client, error) {
 	clientOptions := options.Client().ApplyURI(mongoURL)
