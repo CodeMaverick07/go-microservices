@@ -12,3 +12,4 @@ go get go.mongodb.org/mongo-driver/v2/bson
 go get go.mongodb.org/mongo-driver/v2/mongo
 go get go.mongodb.org/mongo-driver/v2/mongo/options
 go get github.com/rabbitmq/amqp091-go
+go get github.com/rabbitmq/amqp091-go
