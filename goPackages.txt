@@ -13,3 +13,4 @@ go get go.mongodb.org/mongo-driver/v2/mongo
 go get go.mongodb.org/mongo-driver/v2/mongo/options
 go get github.com/rabbitmq/amqp091-go
 go get github.com/rabbitmq/amqp091-go
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative logs.proto

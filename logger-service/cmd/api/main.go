@@ -53,6 +53,7 @@ func main() {
 	panic(err)
 	  }
   go app.rpcListen()
+  go app.gRPCListen()
   log.Println("starting port on ",WebPort)
   srv := &http.Server{
 	  Addr: fmt.Sprintf(":%d", WebPort),
@@ -80,7 +81,7 @@ func (app *Config) rpcListen() error {
 		}
 		go rpc.ServeConn(rpcConn)
 	}
-	return nil	
+		
 }
  
 
