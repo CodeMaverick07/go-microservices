@@ -4,7 +4,7 @@ services:
   caddy:
     image: codemaverick007/micro-caddy:1.0.0
     deploy:
-      mode: replicated
+      mode: replicated 
       replicas: 1
     ports:
       - "80:80"
@@ -14,10 +14,12 @@ services:
      - caddy_config:/config
 
   front-end:
-    image: codemaverick007/golang-frontend:1.0.0
+    image: codemaverick007/golang-frontend:1.0.1
     deploy:
       mode: replicated
       replicas: 1
+    environment:
+      - BROKER_URL: "http://backend"
 
   broker-service:
     image: codemaverick007/broker-service:1.0.1
@@ -90,7 +92,7 @@ services:
       - ./db-data/mongo/:/data/db
 
   postgres:
-    image: postgres:14.0
+    image: postgres:14.2
     ports:
       - "5432:5432"
     restart: always

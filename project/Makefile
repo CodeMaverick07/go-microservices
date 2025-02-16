@@ -29,7 +29,7 @@ down:
 ## build_broker: builds the broker binary as a linux executable
 build_frontend-linux:
 	@echo "Building frontend-linux binary..."
-	cd ../broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${FRONT_END_LINUX} ./cmd/web
+	cd ../front-end && env GOOS=linux CGO_ENABLED=0 go build -o ${FRONT_END_LINUX} ./cmd/web
 	@echo "Done!"
 build_broker:
 	@echo "Building broker binary..."
