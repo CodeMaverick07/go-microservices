@@ -1,0 +1,5 @@
+docker swarm init //to initialize docker swarm
+docker swarm join-token worker // to add the worker node
+docker swarm join-token manager //to add the manager node 
+docker stack deploy -c swarm.yml myapp // myapp is name and -c is configuration and swarm.yml is file which have all the yml data of swarm
+docker service ls //to see all the running services
