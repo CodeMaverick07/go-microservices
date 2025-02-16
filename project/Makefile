@@ -4,6 +4,7 @@ AUTH_BINARY=authApp
 LOGGER_BINARY=loggerServiceApp
 MAILER_BINARY=mailerServiceApp
 LISTENER_BINARY=listenerApp
+FRONT_END_LINUX=frontendApp
 
 ## up: starts all containers in the background without forcing build
 up:
@@ -26,6 +27,10 @@ down:
 	@echo "Done!"
 
 ## build_broker: builds the broker binary as a linux executable
+build_frontend-linux:
+	@echo "Building frontend-linux binary..."
+	cd ../broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${FRONT_END_LINUX} ./cmd/web
+	@echo "Done!"
 build_broker:
 	@echo "Building broker binary..."
 	cd ../broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
