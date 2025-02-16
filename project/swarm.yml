@@ -1,20 +1,18 @@
-version: '3'
+version: "3"
 
 services:
   broker-service:
-    image: codemaverick007/broker-service
-    ports:
-      - "8080:80"
+    image: codemaverick007/broker-service:1.0.1
     deploy:
       mode: replicated
       replicas: 1
-  
+
   listener-service:
     image: codemaverick007/listener-service
     deploy:
       mode: replicated
       replicas: 1
-  
+
   authentication-service:
     image: codemaverick007/authentication-service
     ports:
@@ -24,13 +22,13 @@ services:
       replicas: 1
     environment:
       DSN: "host=postgres port=5432 user=postgres password=password dbname=users sslmode=disable TimeZone=UTC connect_timeout=10"
-    
+
   logger-service:
     image: codemaverick007/logger-service
     deploy:
       mode: replicated
       replicas: 1
-  
+
   mailer-service:
     image: codemaverick007/mailer-service
     deploy:
@@ -58,6 +56,7 @@ services:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
+      - "1025:1025"
     deploy:
       mode: global
 
@@ -73,7 +72,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./db-data/mongo/:/data/db
-  
+
   postgres:
     image: postgres:14.0
     ports:
@@ -88,5 +87,3 @@ services:
       replicas: 1
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
-
-    

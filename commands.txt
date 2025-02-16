@@ -3,3 +3,10 @@ docker swarm join-token worker // to add the worker node
 docker swarm join-token manager //to add the manager node 
 docker stack deploy -c swarm.yml myapp // myapp is name and -c is configuration and swarm.yml is file which have all the yml data of swarm
 docker service ls //to see all the running services
+docker service scale myapp_listener-service=3 //to scale any service 
+docker build -f logger-service.dockerfile -t codemaverick007/logger-service:1.0.1 . //to update the build in docker hub 
+docker push codemaverick007/logger-service:1.0.1  //to push the image dockerhub
+docker service update --image codemaverick007/logger-service:1.0.1 myapp_logger-service //update this services 
+docker stack rm myapp //this will remove the swarm
+docker swarm leave --f //to leave the docker swarm
+
