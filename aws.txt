@@ -1,0 +1,9 @@
+adduser name //to add the user
+usermod -aG sudo name //to give the permissions to createad users
+ufw allow ssh //to update the firewall
+ufw allow http
+ufw allow https
+ufw allow 2377/tcp //this will open the port 2377
+ufw allow 7946/tcp //this will open the port 7946
+sudo hostnamectl set-hostname node-1 //to change the hostname
+docker swarm init --advertise-addr <ip_of_node> //when deplying in production use this command 
